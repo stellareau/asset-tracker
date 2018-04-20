@@ -1,0 +1,29 @@
+{
+  "name": "asset-tracking",
+  "version": "0.0.1",
+  "description": "killin' it",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "Sing Le",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
+    "libxmljs": "^0.18.7",
+    "lodash": "^4.17.5",
+    "mongodb": "^3.0.6",
+    "saml-encoder-decoder-js": "^1.0.1",
+    "swagger-jsdoc": "^1.9.7",
+    "swagger-ui-express": "^3.0.8",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
