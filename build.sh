@@ -32,8 +32,8 @@ case "$1" in
     ;;
 	*)
     clean
-    run
 		build
+    run
 		;;
 esac
 
