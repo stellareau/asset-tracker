@@ -1,5 +1,10 @@
 import React from 'react';
-import {AppBar, Button, Hidden, Icon, LinearProgress, Toolbar, Typography} from 'material-ui';
+import {
+  AppBar, Button, ClickAwayListener, Divider, Grid, Hidden, Icon, IconButton, LinearProgress, List, ListItem,
+  ListItemText, Menu, MenuItem,
+  Toolbar,
+  Typography
+} from 'material-ui';
 import Cookies from 'universal-cookie';
 import './Main.css';
 import CheckoutAssetPage from '../containers/CheckoutAssetPage';
@@ -27,6 +32,14 @@ const styles = {
 };
 
 class Main extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      anchorEl: null
+    }
+  }
+
   componentWillMount() {
     const cookies = new Cookies();
     const authToken = cookies.get('auth');
@@ -34,6 +47,25 @@ class Main extends React.Component {
     // if(_.isUndefined(authToken)) {
     //   history.push('/signin');
     // }
+  }
+
+  _handleMobileMenuClick(url) {
+    this.setState({
+      anchorEl: null
+    });
+    history.push(url);
+  }
+
+  _handleMenuClick(e) {
+    this.setState({
+      anchorEl: e.currentTarget
+    })
+  }
+
+  _handleMenuClose() {
+    this.setState({
+      anchorEl: null
+    })
   }
 
   render() {
@@ -56,9 +88,14 @@ class Main extends React.Component {
               Liquid Studio Assets
             </Typography>
 
-            <Button onClick={ () => alert('hello')}>
-              <Icon className={'fas fa-bars'} style={{color: '#fff'}}/>
+            <Button aria-owns={this.state.anchorEl ? 'simple-menu' : null} aria-haspopup="true" onClick={(e) => this._handleMenuClick(e)}>
+              <Icon className={'fas fa-bars'} style={{color: '#fff', fontSize: '24px'}}/>
             </Button>
+              <Menu id="simple-menu" anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)}>
+                <MenuItem onClick={() => this._handleMobileMenuClick('/')}>Assets</MenuItem>
+                <MenuItem onClick={() => this._handleMobileMenuClick('/stocktake')}>Stocktake</MenuItem>
+                <MenuItem onClick={() => this._handleMobileMenuClick('checkout')}>Checkout/Checkin</MenuItem>
+              </Menu>
           </Toolbar>
         </Hidden>
       </AppBar>
@@ -73,30 +110,6 @@ class Main extends React.Component {
           <Route path="/stocktake" component={StocktakePage}/>
         </Switch>
       </div>
-
-    {/*<Grid container alignItems={'center'} justify={'center'} direction={'column'} style={styles.container}>*/}
-      {/*<Grid item xs={5}>*/}
-        {/*<Button variant="raised" color="primary" style={styles.button}>*/}
-          {/*<Link to="/checkout" style={styles.link}>Checkout An Item</Link>*/}
-        {/*</Button>*/}
-
-        {/*<Button variant="raised" color="secondary" style={styles.button}>*/}
-          {/*<Link to="/borrowed" style={styles.link}>See Borrowed</Link>*/}
-        {/*</Button>*/}
-
-        {/*<Button variant="raised" color="secondary" style={styles.button}>*/}
-          {/*<Link to="/browse" style={styles.link}>Browse</Link>*/}
-        {/*</Button>*/}
-
-        {/*<Button variant="raised" color="primary" style={styles.button}>*/}
-          {/*<Link to="/register" style={styles.link}>Register</Link>*/}
-        {/*</Button>*/}
-
-        {/*<Button variant="raised" color="secondary" style={styles.button}>*/}
-          {/*<Link to="/stocktake" style={styles.link}>Stocktake</Link>*/}
-        {/*</Button>*/}
-      {/*</Grid>*/}
-    {/*</Grid>*/}
     </div>
   }
 }

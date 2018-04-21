@@ -42,9 +42,6 @@ export default class CheckoutDetailsForm extends React.Component {
           </div>
         </Typography>
 
-        {/*<Typography variant={'subheading'}>*/}
-          {/*Transaction number - {this.props.transactionId}*/}
-        {/*</Typography>*/}
 
         <Typography variant={'body1'}>
           Provide some information on how you're going to use the asset:

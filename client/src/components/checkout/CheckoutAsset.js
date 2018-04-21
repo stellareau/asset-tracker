@@ -39,7 +39,6 @@ export default class RegisterAsset extends React.Component {
   }
 
   render() {
-    console.log(this.props.checkoutPage);
     return <div>
       { this.props.checkoutPage === 0 &&
         <div style={{overflow: 'hidden', height: 'calc(100vh - 70px)'}}>

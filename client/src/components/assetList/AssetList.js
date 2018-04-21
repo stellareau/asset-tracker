@@ -5,6 +5,7 @@ import AssetTable from './AssetTable';
 import AssetDetails from './AssetDetails';
 import history from '../../history';
 import RegisterPage from '../../containers/RegisterPage';
+import MainPageLayout from '../../templates/MainPageLayout';
 
 export default class AssetList extends React.Component {
   constructor(props) {
@@ -30,39 +31,27 @@ export default class AssetList extends React.Component {
   };
 
   render() {
-    return <Grid container justify={'center'}>
-      <Grid item xs={10}>
-        <Grid container alignItems={'center'}>
-          <Grid item xs={4}>
-            <Typography variant="display2" style={{margin: '0.7em 0.5em'}}>Inventory</Typography>
-          </Grid>
-          <Grid item xs={5} >
-            <TextField placeholder={'Search for Asset'} style={{width: '90%'}}/>
-            <IconButton>
-              <Icon className={'fas fa-sort-amount-down'} style={{fontSize: 16}}/>
-            </IconButton>
-          </Grid>
-        </Grid>
-        <AssetTable assetList={this.props.assetList} toggleDrawer={(o, row) => this._toggleDrawer(o, 'asset', row)}/>
-       </Grid>
+    return <MainPageLayout title={'Inventory'}
+                           table={
+                             <AssetTable assetList={this.props.assetList} toggleDrawer={(o, row) => this._toggleDrawer(o, 'asset', row)}/>
+                           }>
+        <AssetDetails
+          assetDetails={this.props.asset}
+          isDrawerOpen={this.props.isAssetDrawerOpen}
+          toggleDrawer={(o) => this._toggleDrawer(o, 'asset')}
+          isUpdatingAsset={this.props.isUpdatingAsset}
+          isDeletingAsset={this.props.isDeletingAsset}
+          deleteAsset={this.props.deleteAsset}
+          updateAsset={this.props.updateAsset}
+          onChangeAsset={this.props.onChangeAsset}
+        />
 
-      <AssetDetails
-        assetDetails={this.props.asset}
-        isDrawerOpen={this.props.isAssetDrawerOpen}
-        toggleDrawer={(o) => this._toggleDrawer(o, 'asset')}
-        isUpdatingAsset={this.props.isUpdatingAsset}
-        isDeletingAsset={this.props.isDeletingAsset}
-        deleteAsset={this.props.deleteAsset}
-        updateAsset={this.props.updateAsset}
-        onChangeAsset={this.props.onChangeAsset}
-      />
+        <RegisterPage isDrawerOpen={this.props.isRegisterDrawerOpen} toggleDrawer={(o) => this._toggleDrawer(o, 'register')}/>
 
-      <RegisterPage isDrawerOpen={this.props.isRegisterDrawerOpen} toggleDrawer={(o) => this._toggleDrawer(o, 'register')}/>
-
-      <Button variant="fab" style={{position: 'absolute', bottom: 40, right: 40}} color="primary" onClick={() => this._toggleDrawer(true, 'register')}>
-        <Icon className={'fas fa-plus'}/>
-      </Button>
-      </Grid>
+        <Button variant="fab" style={{position: 'absolute', bottom: 40, right: 40}} color="primary" onClick={() => this._toggleDrawer(true, 'register')}>
+          <Icon className={'fas fa-plus'}/>
+        </Button>
+      </MainPageLayout>
   }
 }
 

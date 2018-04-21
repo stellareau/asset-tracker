@@ -32,6 +32,13 @@ const theme = createMuiTheme({
     body1: {
       fontSize: 16
     }
+  },
+  overrides: {
+    MuiIcon: {
+      root: {
+        fontSize: 16
+      }
+    }
   }
 });
 

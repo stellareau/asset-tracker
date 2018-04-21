@@ -9,7 +9,8 @@ export const config = {
   images: PUBLIC_URL + '/images',
   saml: 'https://aiam.accenture.com/openam/saml2/jsp/applogin.jsp',
   apis: {
-    asset: '/api/v1/asset'
+    asset: '/api/v1/asset',
+    stocktake: '/api/v1/stocktake'
   },
   headers: {
     'Accept': 'application/json',

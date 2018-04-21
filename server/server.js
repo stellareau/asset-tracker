@@ -5,7 +5,7 @@ const MongoClient = require('mongodb').MongoClient;
 const config = require('./config');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-const cors = require('cors')
+const cors = require('cors');
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -29,6 +29,7 @@ app.use(bodyParser.json());
 app.use('/api/v1', router);
 app.use('/api/v1/asset', require('./asset'));
 app.use('/api/v1/transactions', require('./transactions'));
+app.use('/api/v1/stocktake', require('./stocktake'));
 app.use('/api/v1/auth', require('./auth'));
 
 router.get('/', (req, res) => {
