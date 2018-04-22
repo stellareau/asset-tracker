@@ -6,6 +6,7 @@ const cookies = new Cookies();
 
 export const config = {
   url: PROD ? 'https://no1applicant.com' : 'http://localhost:3000',
+  prodEnv: PROD,
   images: PUBLIC_URL + '/images',
   saml: 'https://aiam.accenture.com/openam/saml2/jsp/applogin.jsp',
   apis: {
