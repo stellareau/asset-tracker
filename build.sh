@@ -2,7 +2,7 @@
 
 clean() {
   echo "Removing old images"
-  docker rm -f client server nginx
+  docker rm -f client server
 }
 
 build() {
@@ -23,7 +23,7 @@ start() {
   docker run -d --name nginx -p 443:443 -u 0 --net asset --restart unless-stopped -v /opt:/etc/nginx/certs local-nginx:latest
 
  echo "Starting mongo"
- docker run -d --name mongo --network asset --restart unless-stopped mongo:latest
+ docker run -d --name mongo --network asset -v mongodb:/data/db --entrypoint mongod --restart unless-stopped mongo:latest --bind_ip_all
 }
 
 case "$1" in
@@ -42,7 +42,6 @@ case "$1" in
 	*)
     clean
 		build
-    start
     run
 		;;
 esac

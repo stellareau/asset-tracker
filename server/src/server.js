@@ -36,6 +36,8 @@ router.get('/', (req, res) => {
   res.json({ 'message': 'Hello World' });
 });
 
+console.log(config.database.url);
+
 MongoClient.connect(config.database.url, (err, db) => {
   if(err) { console.log("Unable to connect to MongoDB"); }
 

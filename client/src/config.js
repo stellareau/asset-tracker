@@ -1,11 +1,11 @@
 import Cookies from 'universal-cookie';
 
-const DEV = process.env.NODE_ENV;
+const PROD = process.env.NODE_ENV === 'production';
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const cookies = new Cookies();
 
 export const config = {
-  url: DEV ? 'http://localhost:3000' : 'https://no1applicant.com',
+  url: PROD ? 'https://no1applicant.com' : 'http://localhost:3000',
   images: PUBLIC_URL + '/images',
   saml: 'https://aiam.accenture.com/openam/saml2/jsp/applogin.jsp',
   apis: {
