@@ -5,7 +5,7 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
 const cookies = new Cookies();
 
 export const config = {
-  url: DEV ? 'http://localhost:3000' : '',
+  url: DEV ? 'http://localhost:3000' : 'https://no1applicant.com',
   images: PUBLIC_URL + '/images',
   saml: 'https://aiam.accenture.com/openam/saml2/jsp/applogin.jsp',
   apis: {

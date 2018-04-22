@@ -18,6 +18,13 @@ export default class MainPageLayout extends React.Component {
               </IconButton>
             </Grid>
           }
+          {this.props.button &&
+            <Grid item xs={3}>
+              <Grid container justify={'flex-end'}>
+                {this.props.button}
+              </Grid>
+            </Grid>
+          }
         </Grid>
         {this.props.table}
       </Grid>

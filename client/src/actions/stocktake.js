@@ -1,11 +1,16 @@
 import {config} from '../config';
+import history from '../history';
 
 export const SELECT_STOCKTAKE_ITEM = 'SELECT_STOCKTAKE_ITEM';
 
 export function selectStocktakeItem(item) {
-  return {
-    type: SELECT_STOCKTAKE_ITEM,
-    stocktakeItem: item
+  return dispatch => {
+    history.push(`/stocktake/${item.number}`);
+
+    return dispatch({
+      type: SELECT_STOCKTAKE_ITEM,
+      stocktakeItem: item
+    })
   }
 }
 
@@ -113,13 +118,16 @@ export const GET_STOCKTAKE_ITEM_PENDING = 'GET_STOCKTAKE_ITEM_PENDING';
 export const GET_STOCKTAKE_ITEM_SUCCESS = 'GET_STOCKTAKE_ITEM_SUCCESS';
 export const GET_STOCKTAKE_ITEM_ERROR = 'GET_STOCKTAKE_ITEM_ERROR';
 
-export function getStocktakeItem() {
+export function getStocktakeItem(item) {
   return async (dispatch, getState) => {
     dispatch({
       type: GET_STOCKTAKE_ITEM_PENDING
     });
 
-    const url = config.url + config.apis.stocktake + '/' + getState().stocktake.stocktakeItem.number;
+    const stocktakeNumber = item || getState().stocktake.stocktakeItem.number;
+    console.log(stocktakeNumber);
+
+    const url = config.url + config.apis.stocktake + '/' + stocktakeNumber;
     const options = {
       method: 'GET',
       headers: config.headers,
@@ -132,7 +140,7 @@ export function getStocktakeItem() {
         const data = await res.json();
         return dispatch({
           type: GET_STOCKTAKE_ITEM_SUCCESS,
-          stocktakeItem: data[0]
+          stocktakeItem: data[0] || {}
         });
       default:
         return dispatch({

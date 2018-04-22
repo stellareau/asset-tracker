@@ -14,6 +14,7 @@ const initialState = {
 export function stocktake(state = initialState, action) {
   switch(action.type) {
     case SELECT_STOCKTAKE_ITEM: {
+      console.log('a',action.stocktakeItem);
       return {
         ...state,
         stocktakeItem: action.stocktakeItem

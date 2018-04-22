@@ -79,7 +79,6 @@ class Main extends React.Component {
 
             <Button color="inherit" onClick={ () => history.push('/') }>Assets</Button>
             <Button color="inherit" onClick={ () => history.push('/stocktake') }>Stocktake</Button>
-            <Button color="inherit" onClick={ () => history.push('/checkout') }>Checkout/Checkin</Button>
           </Toolbar>
         </Hidden>
         <Hidden mdUp>

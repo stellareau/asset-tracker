@@ -1,5 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
+const ObjectId = require('mongodb').ObjectID;
 
 const router = express.Router();
 
@@ -26,6 +27,10 @@ router.route('/:number')
   .get((req, res) => {
 
     console.log('Doing a lookup on', req.params.number);
+
+    req.collection.findOne({number: req.params.number}, (e, r) => {
+      console.log(r);
+    });
 
     req.collection.aggregate([
       {
@@ -157,6 +162,14 @@ router.route('/')
   })
   .put((req, res) => {
     const item = req.body;
+
+    console.log('Convert all items into Object ID instead of strings');
+
+    item.items = item.items.map(x => {
+      return ObjectId(x);
+    });
+
+    console.log(item);
 
     req.collection.findOneAndUpdate({number: item.number}, item, (err, result) => {
       if (err) throw err;

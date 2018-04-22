@@ -5,6 +5,8 @@ import StocktakeScan from './StocktakeScan';
 import StocktakeSummaryDetails from './StocktakeSummaryDetails';
 import StocktakeTable from './StocktakeTable';
 import MainPageLayout from '../../templates/MainPageLayout';
+import {Route, Switch} from 'react-router';
+import StocktakeCompleteSummary from './StocktakeCompleteSummary';
 
 export default class Stocktake extends React.Component {
   constructor(props) {
@@ -42,26 +44,77 @@ export default class Stocktake extends React.Component {
     this.props.updateStocktakeItem(item);
   }
 
-  render() {
-    return <Grid container>
-      <Hidden smDown>
-        { !_.isEmpty(this.props.stocktakeItem) ?
-          <MainPageLayout title={'Summary - ' + this.props.stocktakeItem.number}
+  _completeStocktake() {
+    let item = _.cloneDeep(this.props.stocktakeItem);
+
+    item.status = 'Complete';
+
+    this.props.updateStocktakeItem(item);
+  }
+
+  stocktakeSummary = (match) => {
+      if(_.isEmpty(this.props.stocktakeItem)) {
+        this.props.getStocktakeItem(match.match.params.stocktakeNumber);
+        return null;
+      }
+
+      // Stocktake cancelled
+      switch(this.props.stocktakeItem.status) {
+        case 'Cancelled': {
+          return null;
+        }
+        case 'Complete': {
+          return <MainPageLayout title={'Summary - ' + this.props.stocktakeItem.number}
+                                 table={<StocktakeCompleteSummary/>}/>
+        }
+        default: {
+          return <MainPageLayout title={'Stocktake - ' + this.props.stocktakeItem.number}
                           disableSearchbar={true}
+                          button={<Button variant={'raised'} color={'primary'} onClick={() => this._completeStocktake()}>Complete Stocktake</Button>}
                           table={<StocktakeSummaryDetails stocktakeItem={this.props.stocktakeItem}
                                                           getStocktakeItem={this.props.getStocktakeItem}
                           />}/>
-        :
-          <MainPageLayout title={'Stocktake'}
-                          table={<StocktakeTable selectStocktakeItem={this.props.selectStocktakeItem}
-                                                 stocktakeItems={this.props.stocktakeItems}
-                          />}>
-          <Button variant="fab" style={{position: 'absolute', bottom: 40, right: 40}} color="primary" onClick={() => this.props.createStocktakeItem()}>
-            <Icon className={'fas fa-plus'}/>
-          </Button>
-          </MainPageLayout>
         }
+      }
+  };
+
+  render() {
+    console.log(this.props.stocktakeItem);
+    return <Grid container>
+      <Hidden smDown>
+        <Switch>
+          <Route path={'/stocktake/:stocktakeNumber'} render={this.stocktakeSummary}/>
+          <Route path={'/stocktake'} render={() => {
+            return <MainPageLayout title={'Stocktake'}
+                            table={<StocktakeTable selectStocktakeItem={this.props.selectStocktakeItem}
+                                                   stocktakeItems={this.props.stocktakeItems}
+                            />}>
+              <Button variant="fab" style={{position: 'absolute', bottom: 40, right: 40}} color="primary" onClick={() => this.props.createStocktakeItem()}>
+                <Icon className={'fas fa-plus'}/>
+              </Button>
+            </MainPageLayout>
+          }
+          }/>
+        </Switch>
       </Hidden>
+      {/*<Hidden smDown>*/}
+        {/*{ !_.isEmpty(this.props.stocktakeItem) ?*/}
+          {/*<MainPageLayout title={'Summary - ' + this.props.stocktakeItem.number}*/}
+                          {/*disableSearchbar={true}*/}
+                          {/*table={<StocktakeSummaryDetails stocktakeItem={this.props.stocktakeItem}*/}
+                                                          {/*getStocktakeItem={this.props.getStocktakeItem}*/}
+                          {/*/>}/>*/}
+        {/*:*/}
+          {/*<MainPageLayout title={'Stocktake'}*/}
+                          {/*table={<StocktakeTable selectStocktakeItem={this.props.selectStocktakeItem}*/}
+                                                 {/*stocktakeItems={this.props.stocktakeItems}*/}
+                          {/*/>}>*/}
+          {/*<Button variant="fab" style={{position: 'absolute', bottom: 40, right: 40}} color="primary" onClick={() => this.props.createStocktakeItem()}>*/}
+            {/*<Icon className={'fas fa-plus'}/>*/}
+          {/*</Button>*/}
+          {/*</MainPageLayout>*/}
+        {/*}*/}
+      {/*</Hidden>*/}
 
       {/* Mobile view*/}
       <Hidden mdUp>

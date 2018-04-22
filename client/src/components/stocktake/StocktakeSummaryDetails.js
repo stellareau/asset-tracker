@@ -5,7 +5,17 @@ import {
 } from 'material-ui';
 import StocktakeTutorial from './StocktakeTutorial';
 
+const PER_PAGE = 10;
+
 export default class StocktakeSummaryDetails extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      page: 0
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.stocktakeItem !== this.props.stocktakeItem) {
       clearTimeout(this.timer);
@@ -22,7 +32,14 @@ export default class StocktakeSummaryDetails extends React.Component {
   }
 
   _startPoll() {
-    // this.timer = setTimeout(() => this.props.getStocktakeItem(), 1000);
+    console.log('start polling');
+    this.timer = setTimeout(() => this.props.getStocktakeItem(), 6000);
+  }
+
+  _onChangePage(page) {
+    this.setState({
+      page: page
+    })
   }
 
   render() {
@@ -39,26 +56,28 @@ export default class StocktakeSummaryDetails extends React.Component {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Barcode</TableCell>
+                  <TableCell width={300}>Name</TableCell>
+                  <TableCell width={300}>Barcode</TableCell>
+                  <TableCell>Details</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {aa.assets && aa.assets.map((item, i) => {
+                {aa.assets && aa.assets.slice(0).reverse().slice(this.state.page * PER_PAGE, PER_PAGE * (this.state.page + 1)).map((item, i) => {
                   return <TableRow key={i} hover onClick={() => alert('hello')}>
-                  <TableCell>{item.name}</TableCell>
+                  <TableCell width={300}>{item.name}</TableCell>
+                  <TableCell width={300}>{item.barcode}</TableCell>
+                  <TableCell>{item.details}</TableCell>
                   </TableRow>
                 })}
               </TableBody>
             </Table>
             <TablePagination
               component="div"
-              count={2}
+              count={aa.assets && aa.assets.length}
               rowsPerPage={10}
-              page={0}
+              page={this.state.page}
               rowsPerPageOptions={[]}
-              onChangePage={() => {}}
-              onChangeRowsPerPage={() => {}}
+              onChangePage={(e, page)=>{this._onChangePage(page)}}
             />
           </div>
         }

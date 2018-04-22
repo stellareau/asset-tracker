@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     getStocktakeItems: () => dispatch(getStocktakeItems()),
     createStocktakeItem: () => dispatch(createStocktakeItem()),
     updateStocktakeItem: (item) => dispatch(updateStocktakeItem(item)),
-    getStocktakeItem: () => dispatch(getStocktakeItem()),
+    getStocktakeItem: (item) => dispatch(getStocktakeItem(item)),
     scanItemToStocktake: () => dispatch(scanItemToStocktake()),
     selectStocktakeItem: (item) => dispatch(selectStocktakeItem(item))
   }
