@@ -163,7 +163,7 @@ router.post('/register', (req, res) => {
 
   console.log(req.body);
 
-  db.db('assetTracking').collection('asset').insert(req.body);
+  db.db('assetTracking').collection('asset').insertOne(req.body);
 
   return res.status(201).json(req.body);
 });

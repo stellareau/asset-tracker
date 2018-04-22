@@ -56,6 +56,17 @@ export default class AssetDetails extends React.Component {
     })
   }
 
+  _onClick(icon) {
+    switch(icon) {
+      case 'people': {
+        return window.open(`https://people.accenture.com/People/user/${this.props.assetDetails.borrowedBy.user}`, '_blank')
+      }
+      case 'email': {
+        return window.location.href = `mailto:${this.props.assetDetails.borrowedBy.email}`;
+      }
+    }
+  }
+
   render() {
     return <SwipeableDrawer
       anchor={'right'}
@@ -119,8 +130,8 @@ export default class AssetDetails extends React.Component {
                       <Grid item xs={6}>
                         <Grid container justify={'flex-end'}>
                           <IconButton><Icon className={'fas fa-comment-alt'} style={{fontSize: 17}}/></IconButton>
-                          <IconButton><Icon className={'fas fa-envelope'} style={{fontSize: 17}}/></IconButton>
-                          <IconButton><Icon className={'fas fa-address-card'} style={{fontSize: 17}}/></IconButton>
+                          <IconButton onClick={() => this._onClick('email')}><Icon className={'fas fa-envelope'} style={{fontSize: 17}}/></IconButton>
+                          <IconButton onClick={() => this._onClick('people')}><Icon className={'fas fa-address-card'} style={{fontSize: 17}}/></IconButton>
                           <IconButton><Icon className={'fas fa-phone'} style={{fontSize: 17}}/></IconButton>
                         </Grid>
                       </Grid>

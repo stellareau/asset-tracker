@@ -3,6 +3,7 @@ import {Grid, Icon, Table, TableBody, TableCell, TableHead, TablePagination, Tab
 import green from 'material-ui/colors/green';
 import blue from 'material-ui/colors/blue';
 import red from 'material-ui/colors/red';
+import _ from 'lodash';
 
 const PER_PAGE = 10;
 
@@ -10,17 +11,17 @@ const STATE_MAPPINGS = {
   overdue: {
     state: 'Overdue',
     icon: 'fas fa-times-circle',
-    style: { fontSize: 20, color: red[400], marginLeft: '.5rem' }
+    style: { fontSize: 20, color: red[500], marginLeft: '.3rem' }
   },
   borrowed: {
     state: 'Borrowed',
     icon: 'fas fa-exclamation-circle',
-    style: { fontSize: 20, color: blue[400], marginLeft: '.5rem' }
+    style: { fontSize: 20, color: blue[500], marginLeft: '.3rem' }
   },
   available: {
     state: 'Available',
     icon: 'fas fa-check-circle',
-    style: { fontSize: 20, color: green[300], marginLeft: '.5rem' }
+    style: { fontSize: 20, color: green[500], marginLeft: '.3rem' }
   }
 };
 
@@ -54,6 +55,24 @@ export default class AssetTable extends React.Component {
     return statusItems;
   };
 
+  _getAssetIcon(item) {
+    if (item.borrowedDate === -1 || _.isUndefined(item.borrowedDate)) {
+      return <Icon className={STATE_MAPPINGS['available'].icon} style={STATE_MAPPINGS['available'].style}/>
+    }
+
+    const now = new Date();
+    const borrowedDate = new Date(item.borrowedDate*1000);
+    const dueDate = new Date(borrowedDate.setDate(borrowedDate.getDate()+7));
+
+    // Overdue
+    if (now > dueDate) {
+      return <Icon className={STATE_MAPPINGS['overdue'].icon} style={STATE_MAPPINGS['overdue'].style}/>
+    }
+
+    return <Icon className={STATE_MAPPINGS['borrowed'].icon} style={STATE_MAPPINGS['borrowed'].style}/>
+
+  }
+
   render() {
     return <div>
       <Table>
@@ -71,7 +90,7 @@ export default class AssetTable extends React.Component {
         <TableBody>
           {this.props.assetList.slice(this.state.page * PER_PAGE, PER_PAGE * (this.state.page + 1)).map((item, i) => {
             return <TableRow key={i} hover onClick={() => this.props.toggleDrawer(true, i)}>
-              <TableCell>{<Icon className={'fas fa-check-circle'} style={{color: green[400]}}/>}</TableCell>
+              <TableCell>{this._getAssetIcon(item)}</TableCell>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.details}</TableCell>
               <TableCell numeric>{item.count}</TableCell>
