@@ -13,6 +13,7 @@ import {Route, Switch} from 'react-router';
 import AssetListPage from '../containers/AssetListPage';
 import history from '../history';
 import StocktakePage from '../containers/StocktakePage';
+import _ from 'lodash';
 
 const styles = {
   container: {
@@ -44,9 +45,9 @@ class Main extends React.Component {
     const cookies = new Cookies();
     const authToken = cookies.get('auth');
 
-    // if(_.isUndefined(authToken)) {
-    //   history.push('/signin');
-    // }
+    if(_.isUndefined(authToken)) {
+      history.push('/signin');
+    }
   }
 
   _handleMobileMenuClick(url) {

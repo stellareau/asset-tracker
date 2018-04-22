@@ -18,9 +18,10 @@ router.post('/sso', (req, res) => {
     let JWTToken = jwt.sign({ email: email, username: username }, config.secret, { expiresIn: '7d' });
 
     console.log(email, username, JWTToken);
+    console.log(config.url);
   
     res.cookie('auth', JWTToken, { maxAge: 900000, httpOnly: true});
-    res.setHeader('Location', 'http://localhost:3001/');
+    res.setHeader('Location', config.url);
     return res.status(303).json({token: JWTToken});
   });
 });

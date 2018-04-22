@@ -6,10 +6,11 @@ LABEL "author"="Sing Le" \
 WORKDIR /usr/src/app
 COPY package.json /usr/src/app
 COPY package-lock.json /usr/src/app
+RUN npm install
+
 COPY public /usr/src/app/public
 COPY src /usr/src/app/src
-RUN npm install && \
-    npm run build
+RUN npm run build
 
 FROM nginx:1.13.0
 

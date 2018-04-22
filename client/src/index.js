@@ -12,6 +12,7 @@ import SignIn from './components/signin/SignIn';
 import MainPage from './containers/MainPage';
 import {CssBaseline, MuiThemeProvider} from 'material-ui';
 import theme from './muiTheme';
+import {config} from './config';
 
 require('./index.css');
 
@@ -19,6 +20,8 @@ const store = createStore(
   rootReducer,
   applyMiddleware(thunk)
 );
+
+console.log(config.prodEnv);
 
 class App extends React.Component {
   render() {
