@@ -60,7 +60,7 @@ export default class StocktakeTable extends React.Component {
               <TableCell onClick={() => this._selectStocktakeItem(i)}>{item.registered}</TableCell>
               <TableCell onClick={() => this._selectStocktakeItem(i)}>{item.counted}</TableCell>
               <TableCell onClick={() => this._selectStocktakeItem(i)}>{new Date(item.dateStarted * 1000).toDateString()}</TableCell>
-              <TableCell onClick={() => this._selectStocktakeItem(i)}>{item.startedBy}</TableCell>
+              <TableCell onClick={() => this._selectStocktakeItem(i)}>{item.startedBy.length > 0 ? item.startedBy[0] : ''}</TableCell>
               <TableCell>
                 <IconButton onClick={(e) => this._openMenu(e)}>
                   <Icon className={'fas fa-ellipsis-v'}/>

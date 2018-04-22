@@ -20,7 +20,7 @@ router.post('/sso', (req, res) => {
     console.log(email, username, JWTToken);
     console.log(config.url);
   
-    res.cookie('auth', JWTToken, { maxAge: 900000, httpOnly: true});
+    res.cookie('auth', JWTToken, {maxAge: 9999999, httpOnly: false});
     res.setHeader('Location', config.url);
     return res.status(303).json({token: JWTToken});
   });

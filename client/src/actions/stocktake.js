@@ -104,7 +104,8 @@ export function updateStocktakeItem(item) {
     switch(res.status) {
       case 200:
         return dispatch({
-          type: UPDATE_STOCKTAKE_ITEM_SUCCESS
+          type: UPDATE_STOCKTAKE_ITEM_SUCCESS,
+          stocktakeItem: item
         });
       default:
         return dispatch({
@@ -164,6 +165,7 @@ export function scanItemToStocktake(barcode) {
     const options = {
       method: 'POST',
       headers: config.headers,
+      body: JSON.stringify({'barcodeNumber': barcode})
     };
 
     const res = await fetch(url, options);
@@ -171,11 +173,13 @@ export function scanItemToStocktake(barcode) {
     switch(res.status) {
       case 200:
         return dispatch({
-          type: SCAN_ITEM_TO_STOCKTAKE_SUCCESS
+          type: SCAN_ITEM_TO_STOCKTAKE_SUCCESS,
+          barcode: barcode
         });
       default:
         return dispatch({
-          type: SCAN_ITEM_TO_STOCKTAKE_ERROR
+          type: SCAN_ITEM_TO_STOCKTAKE_ERROR,
+          barcode: barcode
         })
     }
   }

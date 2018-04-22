@@ -16,8 +16,10 @@ export default class StocktakeSummaryDetails extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.stocktakeItem !== this.props.stocktakeItem) {
+      console.log(nextProps.stocktakeItem, this.props.stocktakeItem);
+      console.log('here');
       clearTimeout(this.timer);
       this._startPoll();
     }
@@ -42,14 +44,22 @@ export default class StocktakeSummaryDetails extends React.Component {
     })
   }
 
-  render() {
-    const aa = this.props.stocktakeItem;
+  _showTutorial() {
+    const item = this.props.stocktakeItem;
+    // Show tutorial if state is new or in progress and there is no one responsible for the stocktake yet
+    return (
+      (item.status === 'New' || item.status === 'In Progress') &&
+      item.items.length === 0
+    )
 
+  }
+
+  render() {
     return <Grid container justify={'center'}>
       <Grid item xs={11}>
-        {aa.status === 'New' ?
+        {this._showTutorial() ?
           <div>
-            <StocktakeTutorial/>
+            <StocktakeTutorial stocktakeItem={this.props.stocktakeItem}/>
           </div>
         :
           <div>
@@ -62,7 +72,7 @@ export default class StocktakeSummaryDetails extends React.Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {aa.assets && aa.assets.slice(0).reverse().slice(this.state.page * PER_PAGE, PER_PAGE * (this.state.page + 1)).map((item, i) => {
+                {this.props.stocktakeItem.items && this.props.stocktakeItem.items.slice(0).reverse().slice(this.state.page * PER_PAGE, PER_PAGE * (this.state.page + 1)).map((item, i) => {
                   return <TableRow key={i} hover onClick={() => alert('hello')}>
                   <TableCell width={300}>{item.name}</TableCell>
                   <TableCell width={300}>{item.barcode}</TableCell>
@@ -73,7 +83,7 @@ export default class StocktakeSummaryDetails extends React.Component {
             </Table>
             <TablePagination
               component="div"
-              count={aa.assets && aa.assets.length}
+              count={this.props.stocktakeItem.items && this.props.stocktakeItem.items.length}
               rowsPerPage={10}
               page={this.state.page}
               rowsPerPageOptions={[]}

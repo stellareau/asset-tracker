@@ -45,8 +45,10 @@ class Main extends React.Component {
     const cookies = new Cookies();
     const authToken = cookies.get('auth');
 
+    console.log(authToken);
+
     if(_.isUndefined(authToken)) {
-      history.push('/signin');
+      // history.push('/signin');
     }
   }
 
@@ -100,7 +102,15 @@ class Main extends React.Component {
         </Hidden>
       </AppBar>
 
-      {(this.props.isLoading || this.props.isCheckingOut || this.props.isSubmittingSurvey) && <LinearProgress/>}
+      {
+        (
+          this.props.isLoading ||
+          this.props.isCheckingOut ||
+          this.props.isSubmittingSurvey ||
+          this.props.isScanningItemToStocktake ||
+          this.props.isUpdatingStocktakeItem
+        ) && <LinearProgress/>
+      }
 
       <div style={styles.body}>
         <Switch>

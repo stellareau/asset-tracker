@@ -8,7 +8,10 @@ import {
 const mapStateToProps = (state, ownProps) => {
   return {
     stocktakeItems: state.stocktake.stocktakeItems,
-    stocktakeItem: state.stocktake.stocktakeItem
+    stocktakeItem: state.stocktake.stocktakeItem,
+    validStocktake: state.stocktake.validStocktake,
+    message: state.stocktake.message,
+    isScanningItemToStocktake: state.stocktake.isScanningItemToStocktake
   }
 };
 
@@ -18,7 +21,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     createStocktakeItem: () => dispatch(createStocktakeItem()),
     updateStocktakeItem: (item) => dispatch(updateStocktakeItem(item)),
     getStocktakeItem: (item) => dispatch(getStocktakeItem(item)),
-    scanItemToStocktake: () => dispatch(scanItemToStocktake()),
+    scanItemToStocktake: (barcode) => dispatch(scanItemToStocktake(barcode)),
     selectStocktakeItem: (item) => dispatch(selectStocktakeItem(item))
   }
 };

@@ -10,8 +10,8 @@ router.use((req, res, next) => {
   try {
     let token = req.headers.authorization.split(' ')[1];
     jwt.verify(token, config.secret, function(err, decoded) {
-      if (err) return res.status(403).json({ message: err })
-      if (_.isUndefined(decoded)) return res.status(403).json({ message: 'Forbidden' })
+      if (err) return res.status(403).json({ message: err });
+      if (_.isUndefined(decoded)) return res.status(403).json({ message: 'Forbidden' });
   
       req.auth = decoded;
       console.log('Authorized User: ', decoded);
@@ -48,7 +48,7 @@ router.get('/', (req, res) => {
 router.post('/checkout', (req, res) => {
   const db = req.app.locals.db;
   const barcodeNumber = req.body.barcodeNumber;
-  const userObject = {user: req.auth.username, email: req.auth.email}
+  const userObject = {user: req.auth.username, email: req.auth.email};
 
   console.log(barcodeNumber, userObject);
 

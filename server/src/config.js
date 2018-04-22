@@ -4,7 +4,7 @@ const config = {
   database: {
     url: PROD ? 'mongodb://mongo:27017/assetTracking' : 'mongodb://localhost:27017/assetTracking'
   },
-  url: PROD ? 'https://no1applicant.com' : 'http://localhost:3001/',
+  url: PROD ? 'https://no1applicant.com/' : 'http://localhost:3001/',
   secret: 'a'
 };
 

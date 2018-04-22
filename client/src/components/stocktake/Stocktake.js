@@ -6,7 +6,7 @@ import StocktakeSummaryDetails from './StocktakeSummaryDetails';
 import StocktakeTable from './StocktakeTable';
 import MainPageLayout from '../../templates/MainPageLayout';
 import {Route, Switch} from 'react-router';
-import StocktakeCompleteSummary from './StocktakeCompleteSummary';
+import history from '../../history';
 
 export default class Stocktake extends React.Component {
   constructor(props) {
@@ -16,7 +16,8 @@ export default class Stocktake extends React.Component {
 
     this.state = {
       stocktakePage: -1,
-      err: ''
+      err: '',
+      mobileStocktakeNumber: ''
     };
   }
 
@@ -31,8 +32,10 @@ export default class Stocktake extends React.Component {
       return this.state.mobileStocktakeNumber === x.number
     });
 
+    console.log(item);
+
     if (_.isUndefined(item)) {
-      this.setState({
+      return this.setState({
         err: 'Unable to find the stocktake number ' + this.state.mobileStocktakeNumber
       })
     }
@@ -41,6 +44,8 @@ export default class Stocktake extends React.Component {
       item.status = 'In Progress';
     }
 
+    console.log('updated', item);
+
     this.props.updateStocktakeItem(item);
   }
 
@@ -48,6 +53,8 @@ export default class Stocktake extends React.Component {
     let item = _.cloneDeep(this.props.stocktakeItem);
 
     item.status = 'Complete';
+    delete item.items;
+    delete item._id;
 
     this.props.updateStocktakeItem(item);
   }
@@ -64,8 +71,9 @@ export default class Stocktake extends React.Component {
           return null;
         }
         case 'Complete': {
-          return <MainPageLayout title={'Summary - ' + this.props.stocktakeItem.number}
-                                 table={<StocktakeCompleteSummary/>}/>
+          this.props.getStocktakeItems();
+          history.push('/stocktake');
+          return null;
         }
         default: {
           return <MainPageLayout title={'Stocktake - ' + this.props.stocktakeItem.number}
@@ -73,6 +81,7 @@ export default class Stocktake extends React.Component {
                           button={<Button variant={'raised'} color={'primary'} onClick={() => this._completeStocktake()}>Complete Stocktake</Button>}
                           table={<StocktakeSummaryDetails stocktakeItem={this.props.stocktakeItem}
                                                           getStocktakeItem={this.props.getStocktakeItem}
+                                                          validStocktake={this.props.validStocktake}
                           />}/>
         }
       }
@@ -97,29 +106,14 @@ export default class Stocktake extends React.Component {
           }/>
         </Switch>
       </Hidden>
-      {/*<Hidden smDown>*/}
-        {/*{ !_.isEmpty(this.props.stocktakeItem) ?*/}
-          {/*<MainPageLayout title={'Summary - ' + this.props.stocktakeItem.number}*/}
-                          {/*disableSearchbar={true}*/}
-                          {/*table={<StocktakeSummaryDetails stocktakeItem={this.props.stocktakeItem}*/}
-                                                          {/*getStocktakeItem={this.props.getStocktakeItem}*/}
-                          {/*/>}/>*/}
-        {/*:*/}
-          {/*<MainPageLayout title={'Stocktake'}*/}
-                          {/*table={<StocktakeTable selectStocktakeItem={this.props.selectStocktakeItem}*/}
-                                                 {/*stocktakeItems={this.props.stocktakeItems}*/}
-                          {/*/>}>*/}
-          {/*<Button variant="fab" style={{position: 'absolute', bottom: 40, right: 40}} color="primary" onClick={() => this.props.createStocktakeItem()}>*/}
-            {/*<Icon className={'fas fa-plus'}/>*/}
-          {/*</Button>*/}
-          {/*</MainPageLayout>*/}
-        {/*}*/}
-      {/*</Hidden>*/}
 
       {/* Mobile view*/}
       <Hidden mdUp>
         {this.props.validStocktake ?
-          <StocktakeScan/>
+          <StocktakeScan stocktakeItem={this.props.stocktakeItem}
+                         message={this.props.message}
+                         scanItemToStocktake={this.props.scanItemToStocktake}
+                         isScanningItemToStocktake={this.props.isScanningItemToStocktake}/>
           :
           <Grid container justify={'center'} style={{padding: '10px 20px'}}>
             <Typography variant={'display1'} style={{marginBottom: '30px'}}>
@@ -135,6 +129,10 @@ export default class Stocktake extends React.Component {
                        </IconButton>
                      </InputAdornment>
                    }/>
+
+            <Typography color={'error'} variant={'caption'}>
+              {this.state.err}
+            </Typography>
           </Grid>
         }
       </Hidden>

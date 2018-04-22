@@ -5,7 +5,9 @@ const mapStateToProps = (state, ownProps) => {
   return {
     isLoading: state.checkout.isSubmittingSurvey,
     isCheckingOut: state.checkout.isCheckingOut,
-    isSubmittingSurvey: state.checkout.isSubmittingSurvey
+    isSubmittingSurvey: state.checkout.isSubmittingSurvey,
+    isScanningItemToStocktake: state.stocktake.isScanningItemToStocktake,
+    isUpdatingStocktakeItem: state.stocktake.isUpdatingStocktakeItem,
   }
 };
 

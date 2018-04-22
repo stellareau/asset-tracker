@@ -27,6 +27,10 @@ export default class RegisterAsset extends React.Component {
   _onDetected(result) {
     console.log(result.codeResult.code);
 
+    this.setState({
+      barcode: result.codeResult.code
+    });
+
     // Only send request if not already checking out
     if (!this.props.isCheckingOut)
       this.props.checkoutAsset(result.codeResult.code);
