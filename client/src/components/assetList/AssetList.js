@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Grid, Icon, IconButton, TextField, Typography} from 'material-ui';
+import {Button, Grid, Hidden, Icon, IconButton, TextField, Typography} from 'material-ui';
 import _ from 'lodash';
 import AssetTable from './AssetTable';
 import AssetDetails from './AssetDetails';
@@ -12,6 +12,14 @@ export default class AssetList extends React.Component {
     super(props);
 
     this.props.getAssetList();
+
+    this.state = {
+      width: 1000
+    }
+  }
+
+  componentDidMount() {
+    this.setState({width: window.innerWidth})
   }
 
   _toggleDrawer(open, drawer, row) {
@@ -30,28 +38,42 @@ export default class AssetList extends React.Component {
     }
   };
 
+  _mobileView() {
+    if (this.state.width < 600) {
+      history.push('/checkout');
+    }
+
+    return null;
+  }
+
   render() {
-    return <MainPageLayout title={'Inventory'}
-                           table={
-                             <AssetTable assetList={this.props.assetList} toggleDrawer={(o, row) => this._toggleDrawer(o, 'asset', row)}/>
-                           }>
-        <AssetDetails
-          assetDetails={this.props.asset}
-          isDrawerOpen={this.props.isAssetDrawerOpen}
-          toggleDrawer={(o) => this._toggleDrawer(o, 'asset')}
-          isUpdatingAsset={this.props.isUpdatingAsset}
-          isDeletingAsset={this.props.isDeletingAsset}
-          deleteAsset={this.props.deleteAsset}
-          updateAsset={this.props.updateAsset}
-          onChangeAsset={this.props.onChangeAsset}
-        />
+    return <div>
+      <Hidden smDown>
+        <MainPageLayout title={'Inventory'}
+                         table={
+                           <AssetTable assetList={this.props.assetList} toggleDrawer={(o, row) => this._toggleDrawer(o, 'asset', row)}/>
+                         }>
+          <AssetDetails
+            assetDetails={this.props.asset}
+            isDrawerOpen={this.props.isAssetDrawerOpen}
+            toggleDrawer={(o) => this._toggleDrawer(o, 'asset')}
+            isUpdatingAsset={this.props.isUpdatingAsset}
+            isDeletingAsset={this.props.isDeletingAsset}
+            deleteAsset={this.props.deleteAsset}
+            updateAsset={this.props.updateAsset}
+            onChangeAsset={this.props.onChangeAsset}
+          />
 
-        <RegisterPage isDrawerOpen={this.props.isRegisterDrawerOpen} toggleDrawer={(o) => this._toggleDrawer(o, 'register')}/>
+          <RegisterPage isDrawerOpen={this.props.isRegisterDrawerOpen} toggleDrawer={(o) => this._toggleDrawer(o, 'register')}/>
 
-        <Button variant="fab" style={{position: 'absolute', bottom: 40, right: 40}} color="primary" onClick={() => this._toggleDrawer(true, 'register')}>
-          <Icon className={'fas fa-plus'}/>
-        </Button>
-      </MainPageLayout>
+          <Button variant="fab" style={{position: 'absolute', bottom: 40, right: 40}} color="primary" onClick={() => this._toggleDrawer(true, 'register')}>
+            <Icon className={'fas fa-plus'}/>
+          </Button>
+        </MainPageLayout>
+    </Hidden>
+
+    {this._mobileView()}
+    </div>
   }
 }
 

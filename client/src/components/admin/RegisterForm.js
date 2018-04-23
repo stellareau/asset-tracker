@@ -1,19 +1,20 @@
 import React from 'react';
-import {Button, Grid, Icon, LinearProgress, Paper, TextField, Typography} from 'material-ui';
+import {Button, Grid, Icon, IconButton, LinearProgress, Paper, TextField, Typography} from 'material-ui';
 import FormField from '../../templates/FormField';
+import grey from 'material-ui/colors/grey';
 
 const formFields = [
   {key: 'name', label: 'Name'},
   {key: 'details', label: 'Details'},
   {key: 'barcode', label: 'Barcode'},
-  {key: 'count', label: 'Count'},
+  {key: 'condition', label: 'Condition'},
 ];
 
 const initialForm = {
   name: '',
   details: '',
   barcode: '',
-  count: '',
+  condition: '',
 };
 
 export default class RegisterForm extends React.Component {
@@ -39,9 +40,15 @@ export default class RegisterForm extends React.Component {
     return <Grid container direction={'column'} style={{width: '550px'}}>
       <div style={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
         <div style={{flex: 1}}>
-          <Typography variant="headline" style={{margin: '20px 30px 0 30px'}}>
-            Register Asset
-          </Typography>
+          <Grid container justify={'space-between'}>
+            <Typography variant="headline" style={{margin: '20px 40px 10px 40px'}}>
+              Register Asset
+            </Typography>
+
+            <IconButton onClick={() => this.props.toggleDrawer(false)}>
+              <Icon className={'fas fa-times'} style={{color: grey[400], fontSize: 18}}/>
+            </IconButton>
+          </Grid>
 
           <div style={{padding: '30px'}}>
            {formFields.map((item, i) => {

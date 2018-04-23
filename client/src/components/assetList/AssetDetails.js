@@ -19,7 +19,7 @@ const formFields = [
   {key: 'name', label: 'Name'},
   {key: 'details', label: 'Details'},
   {key: 'barcode', label: 'Barcode'},
-  {key: 'count', label: 'Count'},
+  {key: 'condition', label: 'Condition'},
 ];
 
 const styles = {
@@ -67,7 +67,23 @@ export default class AssetDetails extends React.Component {
     }
   }
 
+  _getDate(status) {
+    const item = this.props.assetDetails;
+    const borrowedDate = new Date(item.borrowedDate*1000);
+
+    switch(status) {
+      case 'borrowed': {
+        return borrowedDate.toDateString();
+      }
+      case 'due': {
+        const dueDate = new Date(borrowedDate.setDate(borrowedDate.getDate()+7));
+        return dueDate.toDateString();
+      }
+    }
+  }
+
   render() {
+
     return <SwipeableDrawer
       anchor={'right'}
       open={this.props.isDrawerOpen}
@@ -140,11 +156,11 @@ export default class AssetDetails extends React.Component {
                         <Grid item xs={12}>
                         <Divider style={{margin: '20px 0'}}/>
                           <Typography variant={'body1'}>
-                            <span style={{fontSize: 12}}>Borrow Date:</span> &nbsp;&nbsp; 27/01/2018
+                            <span style={{fontSize: 12}}>Borrow Date:</span> &nbsp;&nbsp; {this._getDate('borrowed')}
                           </Typography>
                           <br/>
                           <Typography variant={'body1'}>
-                            <span style={{fontSize: 12}}>Return Date:</span> &nbsp;&nbsp; 27/01/2018
+                            <span style={{fontSize: 12}}>Return Date:</span> &nbsp;&nbsp; {this._getDate('due')}
                           </Typography>
                         </Grid>
                       </Grid>

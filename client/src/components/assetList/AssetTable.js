@@ -73,6 +73,15 @@ export default class AssetTable extends React.Component {
 
   }
 
+  _getReturnDate(date) {
+    if (date === -1 || _.isUndefined(date)) {
+      return ' ';
+    }
+
+    const now = new Date(date*1000);
+    return (new Date(now.setDate(now.getDate()+7))).toDateString();
+  }
+
   render() {
     return <div>
       <Table>
@@ -81,22 +90,21 @@ export default class AssetTable extends React.Component {
             <TableCell>Status</TableCell>
             <TableCell>Item</TableCell>
             <TableCell>Description</TableCell>
-            <TableCell numeric>Total Count</TableCell>
-            <TableCell>Availability</TableCell>
+            <TableCell>Condition</TableCell>
             <TableCell>Borrowed By</TableCell>
-            <TableCell>Status</TableCell>
+            <TableCell>Due Date</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {this.props.assetList.slice(this.state.page * PER_PAGE, PER_PAGE * (this.state.page + 1)).map((item, i) => {
+            console.log(item.borrowedDate);
             return <TableRow key={i} hover onClick={() => this.props.toggleDrawer(true, i)}>
               <TableCell>{this._getAssetIcon(item)}</TableCell>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.details}</TableCell>
-              <TableCell numeric>{item.count}</TableCell>
-              <TableCell >Available</TableCell>
-              <TableCell >  </TableCell>
-              <TableCell >RECENT</TableCell>
+              <TableCell >{item.condition}</TableCell>
+              <TableCell >{item.borrowedBy.user}</TableCell>
+              <TableCell >{this._getReturnDate(item.borrowedDate)}</TableCell>
             </TableRow>
           })}
         </TableBody>

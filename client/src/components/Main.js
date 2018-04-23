@@ -48,7 +48,7 @@ class Main extends React.Component {
     console.log(authToken);
 
     if(_.isUndefined(authToken)) {
-      // history.push('/signin');
+      history.push('/signin');
     }
   }
 
@@ -94,7 +94,6 @@ class Main extends React.Component {
               <Icon className={'fas fa-bars'} style={{color: '#fff', fontSize: '24px'}}/>
             </Button>
               <Menu id="simple-menu" anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)}>
-                <MenuItem onClick={() => this._handleMobileMenuClick('/')}>Assets</MenuItem>
                 <MenuItem onClick={() => this._handleMobileMenuClick('/stocktake')}>Stocktake</MenuItem>
                 <MenuItem onClick={() => this._handleMobileMenuClick('checkout')}>Checkout/Checkin</MenuItem>
               </Menu>
