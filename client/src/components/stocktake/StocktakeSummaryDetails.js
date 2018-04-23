@@ -35,7 +35,7 @@ export default class StocktakeSummaryDetails extends React.Component {
 
   _startPoll() {
     console.log('start polling');
-    this.timer = setTimeout(() => this.props.getStocktakeItem(), 6000);
+    this.timer = setTimeout(() => this.props.getStocktakeItem(), 2000);
   }
 
   _onChangePage(page) {

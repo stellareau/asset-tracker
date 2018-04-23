@@ -103,7 +103,7 @@ export default class AssetTable extends React.Component {
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.details}</TableCell>
               <TableCell >{item.condition}</TableCell>
-              <TableCell >{item.borrowedBy.user}</TableCell>
+              <TableCell >{item.borrowedBy ? item.borrowedBy.user : ' '}</TableCell>
               <TableCell >{this._getReturnDate(item.borrowedDate)}</TableCell>
             </TableRow>
           })}
